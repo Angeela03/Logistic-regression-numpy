@@ -1,8 +1,6 @@
 # This is the code for gradient descent
 
 import numpy as np
-import pandas as pd
-from sklearn.metrics import accuracy_score
 from matplotlib import pyplot as plt
 
 # Define parameters
@@ -27,15 +25,15 @@ class Logistic_Regression():
         # This function calculates the cost function
         m = self.x.shape[0]
         h = self.h_t()
-        func = (np.sum(np.matmul(-self.y.T, np.log(h)) - (np.matmul((1 - self.y.T), np.log(1 - h)))) / m) + (
-                (lam / (2 * m)) * np.sum(np.matmul(self.theta, self.theta.T)))
+        func = (np.sum((-self.y * np.log(h)) - ((1 - self.y) * np.log(1 - h))) / m) + (
+                (lam / (2 * m)) * np.sum(self.theta**2))
         return func
 
     def derivative(self):
         # This function calculates the derivative
         m = self.x.shape[0]
         h = self.h_t()
-        d = (np.matmul(self.x.T, h - self.y) + (lam * self.theta)) / m
+        d = (np.dot(self.x.T, h - self.y) + (lam * self.theta)) / m
         return d
 
     def fit(self):
@@ -85,3 +83,6 @@ def main(x, y):
     plt.plot(list_epoch, list_loss)
     plt.show()
 
+x=np.random.rand(10,5)
+y=np.zeros(10)
+main(x, y)
